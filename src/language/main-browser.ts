@@ -3,6 +3,11 @@ import { BrowserMessageReader, BrowserMessageWriter, createConnection } from 'vs
 import { createHelloWorldServices } from './hello-world-module';
 
 declare const self: DedicatedWorkerGlobalScope;
+const loc = self.location
+let url = new URL(loc.toString())
+for (const [key, value] of url.searchParams) {
+    console.log(key, " -> ", value);
+}
 
 const messageReader = new BrowserMessageReader(self);
 const messageWriter = new BrowserMessageWriter(self);

@@ -18,7 +18,7 @@ editorConfig.theme = 'vs-dark';
 editorConfig.useLanguageClient = true;
 editorConfig.useWebSocket = false;
 
-const workerURL = new URL('./hello-world-server-worker.js', import.meta.url);
+const workerURL = new URL('./hello-world-server-worker.js?a=b', import.meta.url);
 console.log(workerURL.href);
 
 const lsWorker = new Worker(workerURL.href, {
