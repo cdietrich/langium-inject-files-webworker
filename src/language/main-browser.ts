@@ -12,6 +12,7 @@ self.onmessage = (ev) => {
         model = parsedModel;
     }
     console.log("mimimi2 " + ev.data["model"])
+    console.log(model)
 
     const messageReader = new BrowserMessageReader(self);
     const messageWriter = new BrowserMessageWriter(self);
