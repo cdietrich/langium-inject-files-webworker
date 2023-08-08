@@ -11,9 +11,11 @@ import { URI } from "vscode-uri";
 export class HelloWorldWorkspaceManager extends DefaultWorkspaceManager {
 
     private documentFactory: LangiumDocumentFactory;
+    fakeModel: string;
 
-    constructor(services: LangiumSharedServices) {
+    constructor(services: LangiumSharedServices, fakeModel: string) {
         super(services);
+        this.fakeModel = fakeModel;
         this.documentFactory = services.workspace.LangiumDocumentFactory;
     }
 
@@ -23,6 +25,6 @@ export class HelloWorldWorkspaceManager extends DefaultWorkspaceManager {
     ): Promise<void> {
         await super.loadAdditionalDocuments(folders, collector);
         // Load our library using the `builtin` URI schema
-        collector(this.documentFactory.fromString("person A person B", URI.parse('builtin:///library.hello')));
+        collector(this.documentFactory.fromString(this.fakeModel, URI.parse('builtin:///library.hello')));
     }
 }

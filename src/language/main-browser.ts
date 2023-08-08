@@ -9,6 +9,6 @@ const messageWriter = new BrowserMessageWriter(self);
 
 const connection = createConnection(messageReader, messageWriter);
 
-const { shared } = createHelloWorldServices({ connection, ...EmptyFileSystem }, true);
+const { shared } = createHelloWorldServices({ connection, ...EmptyFileSystem }, "person A person B person C");
 
 startLanguageServer(shared);

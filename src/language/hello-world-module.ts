@@ -47,14 +47,14 @@ export const HelloWorldModule: Module<HelloWorldServices, PartialLangiumServices
  * @param context Optional module context with the LSP connection
  * @returns An object wrapping the shared services and the language-specific services
  */
-export function createHelloWorldServices(context: DefaultSharedModuleContext, fakeWorkspace = false): {
+export function createHelloWorldServices(context: DefaultSharedModuleContext, fakeModel?: string): {
     shared: LangiumSharedServices,
     HelloWorld: HelloWorldServices
 } {
     const shared = inject(
         createDefaultSharedModule(context),
         HelloWorldGeneratedSharedModule,
-        fakeWorkspace ? HelloWorldSharedModule : {}
+        fakeModel !== undefined ? HelloWorldSharedModule(fakeModel) : {}
     );
     const HelloWorld = inject(
         createDefaultModule({ shared }),
@@ -68,8 +68,11 @@ export function createHelloWorldServices(context: DefaultSharedModuleContext, fa
 
 export type HelloWorldSharedServices = LangiumSharedServices;
 
-export const HelloWorldSharedModule: Module<HelloWorldSharedServices, DeepPartial<HelloWorldSharedServices>> = {
-    workspace: {
-        WorkspaceManager: (services) => new HelloWorldWorkspaceManager(services)
+function HelloWorldSharedModule(fakeModel: string): Module<HelloWorldSharedServices, DeepPartial<HelloWorldSharedServices>> {
+    return {
+        workspace: {
+            WorkspaceManager: (services) => new HelloWorldWorkspaceManager(services, fakeModel)
+        }
     }
-}
+    
+} 
