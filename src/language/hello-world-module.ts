@@ -5,6 +5,7 @@ import {
 import { HelloWorldGeneratedModule, HelloWorldGeneratedSharedModule } from './generated/module';
 import { HelloWorldValidator, registerValidationChecks } from './hello-world-validator';
 import { HelloWorldWorkspaceManager } from './HelloWorldWorkspaceManager';
+import { HelloSemanticTokenProvider } from './hello-semantic-tokens';
 
 /**
  * Declaration of custom services - add your own service classes here.
@@ -29,6 +30,9 @@ export type HelloWorldServices = LangiumServices & HelloWorldAddedServices
 export const HelloWorldModule: Module<HelloWorldServices, PartialLangiumServices & HelloWorldAddedServices> = {
     validation: {
         HelloWorldValidator: () => new HelloWorldValidator()
+    },
+    lsp: {
+        SemanticTokenProvider: (services) => new HelloSemanticTokenProvider(services)
     }
 };
 

@@ -1,6 +1,6 @@
 import { MonacoEditorLanguageClientWrapper } from './monaco-editor-wrapper/index.js';
 import { buildWorkerDefinition } from "./monaco-editor-workers/index.js";
-import monarchSyntax from "./syntaxes/hello-world.monarch.js";
+//import monarchSyntax from "./syntaxes/hello-world.monarch.js";
 
 buildWorkerDefinition('./monaco-editor-workers/workers', new URL('', window.location.href).href, false);
 
@@ -10,13 +10,19 @@ const client = new MonacoEditorLanguageClientWrapper();
 const editorConfig = client.getEditorConfig();
 editorConfig.setMainLanguageId('hello-world');
 
-editorConfig.setMonarchTokensProvider(monarchSyntax);
+//editorConfig.setMonarchTokensProvider(monarchSyntax);
 
-editorConfig.setMainCode(`// Hello World is running in the web!`);
+editorConfig.setMainCode(`// Hello World is running in the web!
+Hello A1!`);
 
 editorConfig.theme = 'vs-dark';
 editorConfig.useLanguageClient = true;
 editorConfig.useWebSocket = false;
+
+editorConfig.setMonacoEditorOptions({
+    'semanticHighlighting.enabled': true
+})
+
 
 const workerURL = new URL('./hello-world-server-worker.js', import.meta.url);
 console.log(workerURL.href);
