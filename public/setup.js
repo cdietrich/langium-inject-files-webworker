@@ -18,7 +18,6 @@ editorConfig.theme = 'vs-dark';
 editorConfig.useLanguageClient = true;
 editorConfig.useWebSocket = false;
 
-const encodedModel = ""; //encodeURIComponent(`person A person B person C`)
 const workerURL = new URL('./hello-world-server-worker.js', import.meta.url);
 console.log(workerURL.href);
 

@@ -4,6 +4,7 @@ import { createHelloWorldServices } from './hello-world-module';
 
 declare const self: DedicatedWorkerGlobalScope;
 
+// will be repaced on first call
 self.onmessage = (ev) => {
     let model = ""
     let parsedModel = ev.data["model"]
@@ -11,15 +12,6 @@ self.onmessage = (ev) => {
         model = parsedModel;
     }
     console.log("mimimi2 " + ev.data["model"])
-    // const loc = self.location
-    // let url = new URL(loc.toString())
-    
-    // for (const [key, value] of url.searchParams) {
-    //     console.log(key, " -> ", value);
-    //     if ("model" == key) {
-    //         model = value
-    //     }
-    // }
 
     const messageReader = new BrowserMessageReader(self);
     const messageWriter = new BrowserMessageWriter(self);
