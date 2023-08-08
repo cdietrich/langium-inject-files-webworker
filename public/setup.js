@@ -18,7 +18,8 @@ editorConfig.theme = 'vs-dark';
 editorConfig.useLanguageClient = true;
 editorConfig.useWebSocket = false;
 
-const workerURL = new URL('./hello-world-server-worker.js?a=b', import.meta.url);
+const encodedModel = encodeURIComponent(`person A person B person C`)
+const workerURL = new URL('./hello-world-server-worker.js?model='+encodedModel, import.meta.url);
 console.log(workerURL.href);
 
 const lsWorker = new Worker(workerURL.href, {
