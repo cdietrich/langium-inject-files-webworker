@@ -18,14 +18,15 @@ editorConfig.theme = 'vs-dark';
 editorConfig.useLanguageClient = true;
 editorConfig.useWebSocket = false;
 
-const encodedModel = encodeURIComponent(`person A person B person C`)
-const workerURL = new URL('./hello-world-server-worker.js?model='+encodedModel, import.meta.url);
+const encodedModel = ""; //encodeURIComponent(`person A person B person C`)
+const workerURL = new URL('./hello-world-server-worker.js', import.meta.url);
 console.log(workerURL.href);
 
 const lsWorker = new Worker(workerURL.href, {
     type: 'classic',
     name: 'HelloWorld Language Server'
 });
+lsWorker.postMessage({model: "person A1 person B1 person C1"})
 client.setWorker(lsWorker);
 
 // keep a reference to a promise for when the editor is finished starting, we'll use this to setup the canvas on load
