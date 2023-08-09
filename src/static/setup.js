@@ -1,7 +1,7 @@
 import { MonacoEditorLanguageClientWrapper } from './monaco-editor-wrapper/index.js';
 import { buildWorkerDefinition } from "./monaco-editor-workers/index.js";
 
-buildWorkerDefinition('./monaco-editor-workers/workers', new URL('', window.location.href).href, false)
+buildWorkerDefinition('./monaco-editor-workers/workers', import.meta.url, false)
 
 const languageId = 'hello-world';
 
