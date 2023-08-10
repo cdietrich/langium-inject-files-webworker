@@ -7,7 +7,7 @@ export class HelloSemanticTokenProvider extends AbstractSemanticTokenProvider {
         console.log("mimimimi3")
         if (node.$cstNode !== undefined && node.$container === undefined) {
             flattenCst(node.$cstNode).forEach ((cst) =>{
-                if (isKeyword(cst.feature)) {
+                if (isKeyword(cst.feature) && "person" !== cst.feature.value) {
                     acceptor({
                         node: cst.element,
                         keyword: cst.feature.value,

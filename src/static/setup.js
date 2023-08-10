@@ -142,14 +142,9 @@ const startingPromise = client.start({
                         aliases: [
                             'hello',
                             'Hello'
-                        ],
-                        configuration: './statemachine-configuration.json'
+                        ]
                     }],
-                    grammars: [{
-                        language: 'hello',
-                        scopeName: 'source.hello',
-                        path: './statemachine-grammar.json'
-                    }],
+                    
                     keybindings: [{
                         key: 'ctrl+p',
                         command: 'editor.action.quickCommand',
