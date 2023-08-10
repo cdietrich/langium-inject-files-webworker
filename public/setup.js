@@ -1,5 +1,6 @@
-import { MonacoEditorLanguageClientWrapper } from './monaco-editor-wrapper/index.js';
+import { MonacoEditorLanguageClientWrapper, EditorVscodeApi } from './monaco-editor-wrapper/index.js';
 import { buildWorkerDefinition } from "./monaco-editor-workers/index.js";
+
 
 buildWorkerDefinition('./monaco-editor-workers/workers', import.meta.url, false)
 
@@ -118,3 +119,16 @@ const startingPromise = client.start({
     editorConfig,
     languageClientConfig
 });
+await startingPromise
+await new EditorVscodeApi("unused", {editorConfig: {languageId:"egal"},wrapperConfig:{
+
+}}).updateConfig({
+    json: `{
+    "workbench.colorTheme": "Default Dark Modern",
+    "editor.fontSize": 14,
+    "editor.lightbulb.enabled": true,
+    "editor.lineHeight": 20,
+    "editor.guides.bracketPairsHorizontal": "active",
+    "editor.lightbulb.enabled": true,
+    "editor.semanticHighlighting.enabled": true
+    }`})
