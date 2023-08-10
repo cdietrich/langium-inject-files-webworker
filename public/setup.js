@@ -3,19 +3,10 @@ import { buildWorkerDefinition } from "./monaco-editor-workers/index.js";
 
 buildWorkerDefinition('./monaco-editor-workers/workers', import.meta.url, false)
 
-const languageId = 'hello-world';
+const languageId = 'hello';
 
 const code = `// Hello World is running in the web!
 Hello A1!`;
-
-const editorConfig = {
-    languageId,
-    code,
-    useDiffEditor: false,
-    //automaticLayout: true,
-    theme: 'vs-dark',
-   // 'semanticHighlighting.enabled': true
-};
 
 
 const workerURL = new URL('./hello-world-server-worker.js', import.meta.url);
@@ -97,6 +88,17 @@ const monarchGrammar = {
     }
 };
 
+const monacoEditorConfig = {
+    glyphMargin: true,
+    guides: {
+        bracketPairs: true
+    },
+    lightbulb: {
+        enabled: true
+    },
+    'semanticHighlighting.enabled': true,
+};
+
 // keep a reference to a promise for when the editor is finished starting, we'll use this to setup the canvas on load
 // create a client wrapper
 const client = new MonacoEditorLanguageClientWrapper();
@@ -105,16 +107,83 @@ const client = new MonacoEditorLanguageClientWrapper();
 const startingPromise = client.start({
     htmlElement: document.getElementById("monaco-editor-root"),
     wrapperConfig: {
-        // setting this to false disables using the VSCode config, and instead favors
-        // the monaco editor config (classic editor)
-        useVscodeConfig: false,
-        serviceConfig,
-        // Editor config (classic) (for Monarch)
-        monacoEditorConfig: {
-            languageExtensionConfig: { id: languageId },
-            languageDef: monarchGrammar
+        useVscodeConfig: true,
+        serviceConfig: {
+            enableThemeService: true,
+            enableTextmateService: true,
+            enableModelService: true,
+            configureEditorOrViewsServiceConfig: {
+                enableViewsService: false,
+                useDefaultOpenEditorFunction: true
+            },
+            configureConfigurationServiceConfig: {
+                defaultWorkspaceUri: '/tmp/'
+            },
+            enableLanguagesService: true,
+            // enable quick access "F1" and add required keybindings service
+            enableQuickaccessService: true,
+            enableKeybindingsService: true,
+            debugLogging: true
+        },
+        monacoVscodeApiConfig: {
+            extension: {
+                name: 'langium-example',
+                publisher: 'monaco-languageclient-project',
+                version: '1.0.0',
+                engines: {
+                    vscode: '*'
+                },
+                contributes: {
+                    languages: [{
+                        id: 'hello',
+                        extensions: [
+                            '.hello'
+                        ],
+                        aliases: [
+                            'hello',
+                            'Hello'
+                        ],
+                        configuration: './statemachine-configuration.json'
+                    }],
+                    grammars: [{
+                        language: 'hello',
+                        scopeName: 'source.hello',
+                        path: './statemachine-grammar.json'
+                    }],
+                    keybindings: [{
+                        key: 'ctrl+p',
+                        command: 'editor.action.quickCommand',
+                        when: 'editorTextFocus'
+                    }, {
+                        key: 'ctrl+shift+c',
+                        command: 'editor.action.commentLine',
+                        when: 'editorTextFocus'
+                    }]
+                }
+            },
+            userConfiguration: {
+                json: `{
+"workbench.colorTheme": "Default Dark Modern",
+"editor.fontSize": 14,
+"editor.lightbulb.enabled": true,
+"editor.lineHeight": 20,
+"editor.guides.bracketPairsHorizontal": "active",
+"editor.lightbulb.enabled": true,
+"semanticHighlighting.enabled": true,
+"editor.semanticHighlighting.enabled": true
+}`
+            }
         }
     },
-    editorConfig,
+    editorConfig: {
+        languageId: 'hello',
+        code: code,
+        useDiffEditor: false,
+        automaticLayout: true,
+        theme: 'vs-dark',
+    },
     languageClientConfig
 });
+
+// const ed = await startingPromise;
+// client.updateEditorOptions({editor: {'semanticHighlighting.enabled': true}})
