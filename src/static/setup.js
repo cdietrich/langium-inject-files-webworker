@@ -48,29 +48,67 @@ const userConfig = {
     htmlElement: document.getElementById('monaco-editor-root'),
     wrapperConfig: {
         serviceConfig: {
+            enableThemeService: true,
+            enableTextmateService: true,
+            enableModelService: true,
+            configureEditorOrViewsServiceConfig: {
+            },
+            configureConfigurationServiceConfig: {
+                defaultWorkspaceUri: '/tmp/'
+            },
+            enableLanguagesService: true,
             // enable quick access "F1" and add required keybindings service
             enableQuickaccessService: true,
             enableKeybindingsService: true,
-            enableThemeService: true,
-            enableTextmateService: true,
-            enableLanguagesService: true,
             debugLogging: true
         },
         editorAppConfig: {
-            $type: 'classic',
+            $type: 'vscodeApi',
             languageId: languageId,
             code: codeMain,
             useDiffEditor: false,
-            editorOptions: monacoEditorConfig,
-            diffEditorOptions: monacoEditorConfig,
-            theme: 'vs-dark',
-            languageExtensionConfig: {
-                id: 'hello',
-                extensions: ['.hello'],
-                aliases: ['HELLO', 'hello']
+            extension: {
+                name: 'langium-example',
+                publisher: 'monaco-languageclient-project',
+                version: '1.0.0',
+                engines: {
+                    vscode: '*'
+                },
+                contributes: {
+                    languages: [{
+                        id: 'hello',
+                        extensions: [
+                            '.hello'
+                        ],
+                        aliases: [
+                            'hello',
+                            'Hello'
+                        ]
+                        // ,
+                        // configuration: './statemachine-configuration.json'
+                    }]
+                    // ,
+                    // grammars: [{
+                    //     language: 'hello',
+                    //     scopeName: 'source.hello'
+                    //     // ,
+                    //     // path: './statemachine-grammar.json'
+                    // }]
+                }
+            },
+            //extensionFilesOrContents: extensionFilesOrContents,
+            userConfiguration: {
+                json: `{
+"workbench.colorTheme": "Default Dark Modern",
+"editor.fontSize": 14,
+"editor.lightbulb.enabled": true,
+"editor.guides.bracketPairsHorizontal": "active",
+"editor.lightbulb.enabled": true
+}`
             }
         }
     },
     languageClientConfig: languageClientConfig
+    
 };
 client.start(userConfig);
